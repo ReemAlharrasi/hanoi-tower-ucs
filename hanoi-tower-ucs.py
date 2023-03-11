@@ -5,10 +5,10 @@ comp3600/20
 assignment 1
 name:Reem Al Harrasi
 id:126146
-
 """
 #importing heapq to use prioroty queue
 import heapq
+line='_'*40
 #put our tower of hanoi space set in a dictionary
 space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'LM,0,S':[('L,M,S',2),('LM,S,0',1),('LMS,0,0',1)],
@@ -37,9 +37,9 @@ space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'M,L,S':[('0,LM,S',2),('MS,L,0',1),('M,LS,0',1)],
            '0,LM,S':[('0,LMS,0',1),('M,L,S',2),('S,LM,0',1)],
            '0,LMS,0':[('0,LM,S',1),('S,LM,0',1)]}
-
+#creating a function for uniform cost algorithm 
 def ucs(start, goal, space):
-    # initialize the frontier with the starting state and its cost
+    # initialize the frontier with the start state and its cost
     frontier = [(0, start)]
     # initialize an empty explored set
     explored = set()
@@ -63,7 +63,8 @@ def ucs(start, goal, space):
     # if the goal state is not found, return None
     return None
 
+#initialize our start and goal state and call the function
 start = 'LMS,0,0'
-goal = '0,0,LM'
+goal = '0,0,LMS'
 cost = ucs(start, goal, space)
-print(cost)  # should print 6
+print(cost)

@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Mar 11 18:49:21 2023
+comp3600/20
+assignment 1
+name:Reem Al Harrasi
+id:126146
 
-@author: Reem
 """
-
+#importing heapq to use prioroty queue
 import heapq
-
-space_set={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
+#put our tower of hanoi space set in a dictionary
+space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'LM,0,S':[('L,M,S',2),('LM,S,0',1),('LMS,0,0',1)],
            'LM,S,0':[('L,S,M',2),('LM,0,S',1),('LMS,0,0',1)],
            'L,M,S':[('L,MS,0',1),('LS,M,0',1),('LM,0,S',2)],
@@ -34,3 +37,33 @@ space_set={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'M,L,S':[('0,LM,S',2),('MS,L,0',1),('M,LS,0',1)],
            '0,LM,S':[('0,LMS,0',1),('M,L,S',2),('S,LM,0',1)],
            '0,LMS,0':[('0,LM,S',1),('S,LM,0',1)]}
+
+def ucs(start, goal, space):
+    # initialize the frontier with the starting state and its cost
+    frontier = [(0, start)]
+    # initialize an empty explored set
+    explored = set()
+
+    while frontier:
+        # pop the node with the lowest cost from the frontier
+        cost, node = heapq.heappop(frontier)
+        # if the node is the goal state, return the path to it
+        if node == goal:
+            return cost
+        # add the node to the explored set
+        explored.add(node)
+        # expand the node and add its neighbors to the frontier
+        for neighbor, neighbor_cost in space[node]:
+            if neighbor not in explored:
+                # calculate the total cost to reach the neighbor
+                total_cost = cost + neighbor_cost
+                # add the neighbor and its cost to the frontier
+                heapq.heappush(frontier, (total_cost, neighbor))
+
+    # if the goal state is not found, return None
+    return None
+
+start = 'LMS,0,0'
+goal = '0,0,LM'
+cost = ucs(start, goal, space)
+print(cost)  # should print 6

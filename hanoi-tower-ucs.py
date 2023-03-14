@@ -84,7 +84,7 @@ for i in space:
     print(i , end='    ')
 start=input('\n\nchoose a start state and a goal state from above\nwrite it exactly the same with capital letters\n(Tip:copy and paste from above)\nstart>> ')
 goal=input('goal>> ')
-print('_'*105)
+print()#skip line: for output design purposes
 #call function
 path,cost = UCS(start, goal, space)
 #print depending on whether we got a solution or not

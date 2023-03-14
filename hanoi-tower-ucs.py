@@ -8,7 +8,11 @@ id:126146
 """
 #importing heapq to use prioroty queue
 import heapq
+
+#variables for design purposes
 line='_'*40
+sp=' '*80
+
 #put our tower of hanoi space set in a dictionary
 space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'LM,0,S':[('L,M,S',2),('LM,S,0',1),('LMS,0,0',1)],
@@ -40,32 +44,53 @@ space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
 
 
 #creating a function for uniform cost algorithm 
-def UCS(start_state, goal_state, space_set):
-    #initialize needed libraries
+def UCS(start, goal, space):
+    #initialize variables
     explored = set()
-    queue = [(0, start_state, [])]
-    while queue:
-        x= heapq.heappop(queue)
-        print(x)
-        (cost, current_state, path) =x
+    frontier = [(0, start, [])]#add start to frontier with cost=0
+    iteration=0
+    #while frontier is not empty
+    while frontier:
+        #print iteration's frontier and explored
+        print('\niteration number: ',iteration)
+        print(line,'frontier',line)
+        for i in frontier:
+            print(i)
+        print(line,'explored',line)
+        print(explored)
+        print('\n',sp)
         
-        if current_state == goal_state:
-            return path, cost
-        if current_state not in explored:
-            explored.add(current_state)
-            for (child_state, child_cost) in space_set[current_state]:
-                heapq.heappush(queue, (cost + child_cost, child_state, path + [(current_state, child_state)]))
+        #pop out the state with the least cost
+        (cost, current, path) =heapq.heappop(frontier)
+        
+        if current == goal:
+            return path, cost #stop if current state is the goal
+        
+        if current not in explored: #explore current's neighbors and add it explored set if it is not there already
+            explored.add(current)
+            for item in space[current]: #get nighbors of the current state
+                neighbor=item[0] #get neighbor
+                neighborcost=item[1] #get neighbor cost
+                newcost=cost + neighborcost #calculate new cumulative cost
+                newpath=path + [(current, neighbor)] #path from start to neighbor
+                #add to frontier the new neighbor with new cost and the path as a tuple
+                heapq.heappush(frontier, (newcost, neighbor, newpath))
+        iteration+=1
+    #return none for pathand cost if the goal state is not found
     return None,None
 
 
 #initialize our start and goal state and call the function
 start = 'LMS,0,0'
 goal = '0,0,LMS'
+#call function
 path,cost = UCS(start, goal, space)
+#print depending on whether we got a solution or not
 if path==None:
-    print('solution does not exist')
+    print('\n\nsolution does not exist')
 else:
-    print('path:')
+    print('\n\npath obtained:')
     for i in path:
-        print(i[0])
+        print(i[0],end='  >  ')
+    print(i[1])
     print('\ncost:',cost)

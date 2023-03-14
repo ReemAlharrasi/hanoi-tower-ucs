@@ -6,12 +6,11 @@ assignment 1
 name:Reem Al Harrasi
 id:126146
 """
-#importing heapq to use prioroty queue
+#importing heapq to use priority queue
 import heapq
 
 #variables for design purposes
 line='_'*40
-sp=' '*80
 
 #put our tower of hanoi space set in a dictionary
 space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
@@ -57,11 +56,10 @@ def UCS(start, goal, space):
         for i in frontier:
             print(i)
         print(line,'explored',line)
-        print(explored)
-        print('\n',sp)
+        print(explored,'\n\n')
         
         #pop out the state with the least cost
-        (cost, current, path) =heapq.heappop(frontier)
+        cost, current, path =heapq.heappop(frontier)
         
         if current == goal:
             return path, cost #stop if current state is the goal
@@ -80,16 +78,20 @@ def UCS(start, goal, space):
     return None,None
 
 
-#initialize our start and goal state and call the function
-start = 'LMS,0,0'
-goal = '0,0,LMS'
+#ask user for start and goal state
+print(line,'possible start and goal',line)
+for i in space:
+    print(i , end='    ')
+start=input('\n\nchoose a start state and a goal state from above\nwrite it exactly the same with capital letters\n(Tip:copy and paste from above)\nstart>> ')
+goal=input('goal>> ')
+print('_'*105)
 #call function
 path,cost = UCS(start, goal, space)
 #print depending on whether we got a solution or not
 if path==None:
     print('\n\nsolution does not exist')
 else:
-    print('\n\npath obtained:')
+    print('\n\nshortest path obtained:')
     for i in path:
         print(i[0],end='  >  ')
     print(i[1])

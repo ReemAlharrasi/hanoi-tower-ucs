@@ -79,6 +79,7 @@ def UCS(start, goal, space):
 
 
 #ask user for start and goal state
+print(' '*40,'  hanoi tower puzzle')
 print(line,'possible start and goal',line)
 for i in space:
     print(i , end='    ')

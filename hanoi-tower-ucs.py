@@ -37,34 +37,35 @@ space={'LMS,0,0':[('LM,0,S',1),('LM,S,0',1)],
            'M,L,S':[('0,LM,S',2),('MS,L,0',1),('M,LS,0',1)],
            '0,LM,S':[('0,LMS,0',1),('M,L,S',2),('S,LM,0',1)],
            '0,LMS,0':[('0,LM,S',1),('S,LM,0',1)]}
+
+
 #creating a function for uniform cost algorithm 
-def ucs(start, goal, space):
-    # initialize the frontier with the start state and its cost
-    frontier = [(0, start)]
-    # initialize an empty explored set
+def UCS(start_state, goal_state, space_set):
+    #initialize needed libraries
     explored = set()
+    queue = [(0, start_state, [])]
+    while queue:
+        x= heapq.heappop(queue)
+        print(x)
+        (cost, current_state, path) =x
+        
+        if current_state == goal_state:
+            return path, cost
+        if current_state not in explored:
+            explored.add(current_state)
+            for (child_state, child_cost) in space_set[current_state]:
+                heapq.heappush(queue, (cost + child_cost, child_state, path + [(current_state, child_state)]))
+    return None,None
 
-    while frontier:
-        # pop the node with the lowest cost from the frontier
-        cost, node = heapq.heappop(frontier)
-        # if the node is the goal state, return the path to it
-        if node == goal:
-            return cost
-        # add the node to the explored set
-        explored.add(node)
-        # expand the node and add its neighbors to the frontier
-        for neighbor, neighbor_cost in space[node]:
-            if neighbor not in explored:
-                # calculate the total cost to reach the neighbor
-                total_cost = cost + neighbor_cost
-                # add the neighbor and its cost to the frontier
-                heapq.heappush(frontier, (total_cost, neighbor))
-
-    # if the goal state is not found, return None
-    return None
 
 #initialize our start and goal state and call the function
 start = 'LMS,0,0'
 goal = '0,0,LMS'
-cost = ucs(start, goal, space)
-print(cost)
+path,cost = UCS(start, goal, space)
+if path==None:
+    print('solution does not exist')
+else:
+    print('path:')
+    for i in path:
+        print(i[0])
+    print('\ncost:',cost)

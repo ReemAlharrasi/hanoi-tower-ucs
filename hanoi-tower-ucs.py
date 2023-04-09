@@ -72,7 +72,8 @@ def UCS(start, goal, space):
                 newcost=cost + neighborcost #calculate new cumulative cost
                 newpath=path + [(current, neighbor)] #path from start to neighbor
                 #add to frontier the new neighbor with new cost and the path as a tuple
-                heapq.heappush(frontier, (newcost, neighbor, newpath))
+                if neighbor not in explored:
+                    heapq.heappush(frontier, (newcost, neighbor, newpath))
         iteration+=1
     #return none for pathand cost if the goal state is not found
     return None,None
@@ -83,8 +84,8 @@ print(' '*40,'  hanoi tower puzzle')
 print(line,'possible start and goal',line)
 for i in space:
     print(i , end='    ')
-start=input('\n\nchoose a start state and a goal state from above\nwrite it exactly the same with capital letters\n(Tip:copy and paste from above)\nstart>> ')
-goal=input('goal>> ')
+start=input('\n\nchoose a start state and a goal state from above\nwrite it exactly the same with capital letters\n(Tip:copy and paste from above)\nstart>> ').strip()
+goal=input('goal>> ').strip()
 print()#skip line: for output design purposes
 #call function
 path,cost = UCS(start, goal, space)
